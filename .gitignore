@@ -1,2 +1,3 @@
 venvs/*
 *sqlite3
+*.pyc
