@@ -12,7 +12,7 @@ def index(request):
     # pprint(queryset)
     # pprint(queryset[0].choices.all())
     # queryset = Question.objects.filter(question_text="test")
-    latest_question_list = Question.objects.order_by("-pub_date")[:5]
+    # latest_question_list = Question.objects.order_by("-pub_date")[:5]
     template = loader.get_template("polls/index.html")
     print(queryset)
 
