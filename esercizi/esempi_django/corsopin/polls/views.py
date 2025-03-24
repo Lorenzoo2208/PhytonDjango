@@ -77,3 +77,8 @@ def vote(request, question_id):
         # Dopo aver gestito correttamente la richiesta POST, reindirizza l'utente alla pagina dei risultati.
         # Questo previene la possibilità di reinviare accidentalmente i dati (es. ricaricando la pagina).
         return HttpResponseRedirect(reverse("polls:results", args=(question.id,)))
+
+
+
+def home(request):
+    return render(request, 'corsopin/index.html')
