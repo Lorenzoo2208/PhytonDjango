@@ -1,10 +1,14 @@
 from pprint import pprint
 
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponse, HttpResponse
+from django.http import HttpResponse, HttpResponse, HttpResponseNotAllowed
+from django.contrib.auth import get_user_model
 
 from .models import Author
 from .forms import AuthorForm, CategoryForm, BlogPostForm
+
+
+User = get_user_model()
 
 # Create your views here.
 def index(request):
@@ -14,14 +18,18 @@ def index(request):
 ## AUTORI ##
 
 def create_author(request):
+    # user_qs = User.objects.all().filter(is_staff=False)
     if request.method == 'POST':
         form = AuthorForm(request.POST)
+        # form.fields['user'].queryset = user_qs
+
         if form.is_valid():
             form.save()
             # Redirect a una pagina di conferma o alla lista degli autori
             return redirect('blogs:index')
     else:
         form = AuthorForm()
+        # form.fields['user'].queryset = user_qs
     return render(request, 'blogs/create_author.html', {'form': form})
 
 
@@ -39,6 +47,13 @@ def update_author(request, author_id):
     return render(request, 'blogs/update_author.html', {'form': form, 'author': author})
 
 ## TODO ## Fare lista categorie
+
+def list_authors(request):
+    if request.method == 'GET':
+        queryset = Author.objects.all()
+        return render(request, 'blogs/list_author.html', {'titolo': 'Lista Autori', 'queryset': queryset})
+    
+    return HttpResponseNotAllowed(['POST'])
 
 
 ## CATEGORIE ##
