@@ -8,7 +8,11 @@ from pprint import pprint
 
 def index(request):
     pprint(dir(request))
-    queryset = Question.objects.all()
+    filtro = request.GET.get('q',None)
+    if filtro is None:
+        queryset = Question.objects.all()
+    else:
+        queryset = Question.objects.all().filter(question_text__icontains=filtro)
     # pprint(queryset)
     # pprint(queryset[0].choices.all())
     # queryset = Question.objects.filter(question_text="test")
@@ -18,6 +22,7 @@ def index(request):
 
     context = {
         "latest_question_list": queryset,
+        "user": request.user
     }
     return HttpResponse(template.render(context, request))
 

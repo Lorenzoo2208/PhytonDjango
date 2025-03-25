@@ -1,7 +1,7 @@
 # admin.py
 
 from django.contrib import admin
-from .models import Question, Choice
+from .models import Question, Choice, Tag, Squadra
 
 # Inline per gestire le Choice direttamente nella pagina di Question
 # class ChoiceInline(admin.TabularInline):
@@ -70,3 +70,12 @@ class ChoiceAdmin(admin.ModelAdmin):
     )
     # Evitiamo che i timestamps vengano modificati manualmente
     readonly_fields = ("created_at", "updated_at")
+
+
+@admin.register(Tag)
+class TagAdmin(admin.ModelAdmin):
+    pass
+
+@admin.register(Squadra)
+class SquadraAdmin(admin.ModelAdmin):
+    pass

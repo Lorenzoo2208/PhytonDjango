@@ -61,3 +61,31 @@ class Choice(models.Model):
     def __str__(self):
         # Ritorna il testo della scelta come stringa rappresentativa
         return self.choice_text
+
+class Tag(models.Model):
+    name = models.CharField(max_length=200)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "Tag"
+        verbose_name_plural = "Tags"
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return self.name
+
+class Squadra(models.Model):
+    name = models.CharField(max_length=200)
+    sconfitte_consective = models.IntegerField(default=0)
+    vittorie_consective = models.IntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "Squadra"
+        verbose_name_plural = "Squadre"
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return self.name
