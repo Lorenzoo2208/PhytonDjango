@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponse, HttpResponseNotAllowed
 from django.contrib.auth import get_user_model
 
-from .models import Author
+from .models import Author, BlogPost
 from .forms import AuthorForm, CategoryForm, BlogPostForm
 
 
@@ -12,7 +12,8 @@ User = get_user_model()
 
 # Create your views here.
 def index(request):
-    return render(request, 'blogs/index.html', {'title': 'implementa tu la home page'} )
+    posts = BlogPost.objects.all()[:10]
+    return render(request, 'blogs/index.html', {'posts': posts} )
 
 
 ## AUTORI ##
