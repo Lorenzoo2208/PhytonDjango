@@ -1,10 +1,12 @@
-from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse, Http404, HttpResponseRedirect
-from django.template import loader
-from django.urls import reverse
+# Importazioni necessarie da Django per la gestione delle viste e dei template.
+from django.shortcuts import render, get_object_or_404  # render: per rendere il template; get_object_or_404: per recuperare un oggetto o sollevare un 404.
+from django.http import HttpResponse, Http404, HttpResponseRedirect  # HttpResponse: per restituire una risposta HTTP; Http404: per segnalare un errore 404; HttpResponseRedirect: per reindirizzare l'utente.
+from django.template import loader  # loader: per caricare manualmente un template.
+from django.urls import reverse  # reverse: per ottenere dinamicamente l'URL di una view in base al suo nome.
 
-from polls.models import Question, Choice
-from pprint import pprint
+# Importazione dei modelli definiti nell'applicazione "polls".
+from polls.models import Question, Choice  
+from pprint import pprint  # pprint: per stampare in modo leggibile gli attributi dell'oggetto request (utile per il debugging).
 
 def index(request):
     pprint(dir(request))
@@ -18,34 +20,45 @@ def index(request):
     # queryset = Question.objects.filter(question_text="test")
     latest_question_list = Question.objects.order_by("-pub_date")[:5]
     template = loader.get_template("polls/index.html")
-    print(queryset)
-
+    
+    # Prepara il contesto da passare al template: in questo caso, una lista di domande filtrate.
     context = {
-        "latest_question_list": queryset,
+        "latest_question_list": latest_question_list,
         "user": request.user
     }
+    
+    # Rende il template con il contesto specificato e restituisce la risposta HTTP generata.
     return HttpResponse(template.render(context, request))
 
 
 def detail(request, question_id):
+    # Tenta di recuperare la domanda con l'ID fornito.
     try:
         question = Question.objects.get(pk=question_id)
     except Question.DoesNotExist:
+        # Se la domanda non esiste, solleva un'eccezione Http404 con un messaggio di errore.
         raise Http404("Question does not exist")
+    # Se la domanda viene trovata, viene renderizzato il template "polls/detail.html" con la domanda nel contesto.
     return render(request, "polls/detail.html", {"question": question})
 
 
 def results(request, question_id):
+    # Recupera la domanda con il pk specificato. Se non esiste, restituisce una pagina 404.
     question = get_object_or_404(Question, pk=question_id)
+    # Rende il template "polls/results.html" passando l'oggetto question nel contesto.
     return render(request, "polls/results.html", {"question": question})
 
 
 def vote(request, question_id):
+    # Recupera la domanda per la quale l'utente sta votando; se non esiste, restituisce un errore 404.
     question = get_object_or_404(Question, pk=question_id)
     try:
+        # Tenta di recuperare la scelta selezionata dall'utente:
+        # Il valore della chiave "choice" viene preso dai dati POST della richiesta.
         selected_choice = question.choices.get(pk=request.POST["choice"])
     except (KeyError, Choice.DoesNotExist):
-        # Redisplay the question voting form.
+        # Se la chiave "choice" non esiste nel POST o la scelta con l'ID specificato non esiste,
+        # viene ri-renderizzato il template "polls/detail.html" con un messaggio di errore.
         return render(
             request,
             "polls/detail.html",
@@ -55,9 +68,15 @@ def vote(request, question_id):
             },
         )
     else:
+        # Se la scelta esiste, incrementa il contatore dei voti di 1.
         selected_choice.votes += 1
+        # Salva l'aggiornamento nel database.
         selected_choice.save()
-        # Always return an HttpResponseRedirect after successfully dealing
-        # with POST data. This prevents data from being posted twice if a
-        # user hits the Back button.
+        # Dopo aver gestito correttamente la richiesta POST, reindirizza l'utente alla pagina dei risultati.
+        # Questo previene la possibilità di reinviare accidentalmente i dati (es. ricaricando la pagina).
         return HttpResponseRedirect(reverse("polls:results", args=(question.id,)))
+
+
+
+def home(request):
+    return render(request, 'corsopin/index.html')
