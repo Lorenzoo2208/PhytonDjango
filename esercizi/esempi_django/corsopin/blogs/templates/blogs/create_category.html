@@ -1,0 +1,14 @@
+{% extends "blogs/base.html" %}
+
+{% block title %}Crea Categoria{% endblock %}
+
+{% block content %}
+    <h1 style="margin-top: 0;">Crea Categoria</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" style="background-color: #4CAF50; color: white; padding: 0.5em 1em; border: none; border-radius: 4px; cursor: pointer;">
+            Crea Categoria
+        </button>
+    </form>
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends "blogs/base.html" %}
+
+{% block title %}lista Autore{% endblock %}
+
+{% block content %}
+<h2>lista autori:</h2>
+<ul>
+{% for author in queryset %}
+    <li>{{ author.user }} <a href="{% url 'blogs:update_author' author.id %}"> Aggiorna </a></li>
+{% endfor %}
+</ul>
+{% endblock %}

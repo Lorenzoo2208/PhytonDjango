@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>{% block title %}Blog{% endblock %}</title>
+</head>
+<body style="font-family: sans-serif; background-color: #f9f9f9; margin: 0; padding: 0;">
+    <nav style="background-color: #333; padding: 1em;">
+        <a href={% url "blogs:index" %} style="color: white; margin-right: 1em; text-decoration: none;">Home</a>
+        <a href={% url "blogs:create_author" %} style="color: white; margin-right: 1em; text-decoration: none;">Autori</a>
+        <a href="/articoli/" style="color: white; text-decoration: none;">Articoli</a> -->
+    </nav>
+
+    <div style="max-width: 800px; margin: 2em auto; background: white; padding: 2em; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>
