@@ -15,3 +15,13 @@ class BlogPostForm(forms.ModelForm):
     class Meta:
         model = BlogPost
         fields = ['title', 'slug', 'content', 'author', 'categories', 'related_posts']
+
+## Custom Form
+
+class CategorySelectForm(forms.Form):
+    category = forms.ModelChoiceField(
+        queryset=Category.objects.all(),
+        required=True,
+        to_field_name='slug',
+        empty_label="-- Scegli una categoria --"
+    )

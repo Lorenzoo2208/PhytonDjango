@@ -4,10 +4,43 @@
 
 {% block content %}
     <h1 style="margin-top: 0; color: #333;">Ultimi post</h1>
+
+    <form method="get" style="
+        margin-bottom: 2em;
+        padding: 1em;
+        background-color: #f1f1f1;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        display: flex;
+        align-items: flex-end;
+        gap: 1em;
+        flex-wrap: wrap;
+    ">
+        <div style="flex: 1;">
+            {{ category_form.as_p }}
+        </div>
+        <button type="submit" style="
+            background-color: #007BFF;
+            color: white;
+            padding: 0.6em 1.2em;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        ">Vai</button>
+    </form>
+
     <ul style="list-style: none; padding: 0; margin: 0;">
         {% for post in posts %}
-            <li style="margin-bottom: 1.5em; padding: 1em; border: 1px solid #ddd; border-radius: 6px; background-color: #fdfdfd;">
-                <h2 style="margin: 0 0 0.5em 0; font-size: 1.2em; color: #222;">{{ post }}</h2>
+            <li style="
+                margin-bottom: 1.5em;
+                padding: 1em;
+                border: 1px solid #ddd;
+                border-radius: 6px;
+                background-color: #fdfdfd;
+            ">
+                <h2 style="margin: 0 0 0.5em 0; font-size: 1.2em; color: #222;">
+                    {{ post }}
+                </h2>
                 <p style="margin: 0.2em 0;">
                     <strong>Autore:</strong>
                     <a href="{% url 'blogs:update_author' post.author.id %}" style="color: #007BFF; text-decoration: none;">

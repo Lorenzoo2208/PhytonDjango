@@ -4,8 +4,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponse, HttpResponseNotAllowed
 from django.contrib.auth import get_user_model
 
-from .models import Author, BlogPost
-from .forms import AuthorForm, CategoryForm, BlogPostForm
+from .models import Author, BlogPost, Category
+from .forms import AuthorForm, CategoryForm, BlogPostForm, CategorySelectForm
 
 
 User = get_user_model()
@@ -13,7 +13,16 @@ User = get_user_model()
 # Create your views here.
 def index(request):
     posts = BlogPost.objects.all()[:10]
-    return render(request, 'blogs/index.html', {'posts': posts} )
+    category_form = CategorySelectForm(request.GET or None)
+    if category_form.is_valid():
+        category = category_form.cleaned_data['category']
+        return redirect('blogs:category_index', category_slug=category.slug)
+    return render(request, 'blogs/index.html', {'posts': posts, 'category_form': category_form} )
+
+
+def category_index(request, category_slug):
+   posts = BlogPost.objects.all().filter(categories__slug=category_slug)
+   return render(request, 'blogs/index.html', {'posts': posts} )
 
 
 ## AUTORI ##
